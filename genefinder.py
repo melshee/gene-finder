@@ -1,26 +1,85 @@
 #database of codon table? 
 amino_acids = {
-    'I': {'AUU', 'AUC', 'AUA'},
-    'L': {'CUU', 'CUC', 'CUA', 'CUG', 'UUA', 'UUG'},
-    'V': {'GUU', 'GUC', 'GUA', 'GUG'},
-    'F': {'UUU', 'UUC'},
-    'M': {'AUG'},
-    'C': {'UGU', 'UGC'},
-    'A': {'GCU', 'GCC', 'GCA', 'GCG'},
-    'G': {'GGU', 'GGC', 'GGA', 'GGG'},
-    'P': {'CCU', 'CCC', 'CCA', 'CCG'},
-    'T': {'ACU', 'ACC', 'ACA', 'ACG'},
-    'S': {'UCU', 'UCC', 'UCA', 'UCG', 'AGU', 'AGC'},
-    'Y': {'UAU','UAC'},
-    'W': {'UGG'},
-    'Q': {'CAA','CAG'},
-    'N': {'AAU','AAC'},
-    'H': {'CAU','CAC'},
-    'E': {'GAA','GAG'},
-    'D': {'GAU','GAC'},
-    'K': {'AAA','AAG'},
-    'R': {'CGU', 'CGC','CGA','CGG', 'AGA', 'AGG'},
-    #'STOP': {'UAA', }
+    'AUU': "I",
+    "AUC": "I",
+    "AUA": "I",
+
+    "CUU": 'L',
+    "CUC": "L",
+    "CUA": "L",
+    "CUG": "L",
+    "UUA": "L",
+    "UUG": "L",
+    
+    'GUU': 'V',
+    'GUC': 'V',
+    'GUA': 'V',
+    'GUG': 'V',
+
+    'UUU': 'F',
+    'UUC': 'F',
+
+    'AUG': 'M',
+
+    'UGU': 'C',
+    'UGC': 'C',
+
+    'GCU': 'A',
+    'GCC': 'A',
+    'GCA': 'A',
+    'GCG': 'A',
+
+    'GGU': 'G',
+    'GGC': 'G',
+    'GGA': 'G',
+    'GGG': 'G',
+
+    'CCU': 'P',
+    'CCC': 'P',
+    'CCA': 'P',
+    'CCG': 'P',
+
+    'ACU': 'T',
+    'ACC': 'T',
+    'ACA': 'T',
+    'ACG': 'T',
+
+    'UCU': 'S',
+    'UCC': 'S',
+    'UCA': 'S',
+    'UCG': 'S',
+    'AGU': 'S',
+    'AGC': 'S',
+
+    'UAU': 'Y',
+    'UAC': 'Y',
+
+    'UGG': 'W',
+
+    'CAA': 'Q',
+    'CAG': 'Q',
+
+    'AAU': 'N',
+    'AAC': 'N',
+
+    'CAU': 'H',
+    'CAC': 'H',
+    
+    'GAA': 'E',
+    'GAG': 'E',
+
+    'GAU': 'D',
+    'GAC': 'D',
+    
+    'AAA': 'K',
+    'AAG': 'K',
+
+    'CGU': 'R',
+    'CGC': 'R',
+    'CGA': 'R',
+    'CGG': 'R',
+    'AGA': 'R',
+    'AGG': 'R',
 }
 
 def find_stop_codon(a):
@@ -53,7 +112,7 @@ amino_abbr = {
     'E': 'glutamic acid',
     'D': 'aspartic acid',
     'K': 'lysine',
-    'R': 'arginine'
+    'R': 'arginine',
 }
 
 corresponding_nucleotides = {
@@ -62,7 +121,7 @@ corresponding_nucleotides = {
     'T': 'A',
     #pyradimines
     'G': 'C',
-    'C': 'G'
+    'C': 'G',
 }
 
 #get the gene strand from user: test, TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT
@@ -160,11 +219,10 @@ protein_sequence = ""
 #testing sequence: TCATAACGCGCTACCCGATGGAGCTCTGGGCCCAAATTTCATCCACT
 print(mrna_codons)
 for mrna_codon in mrna_codons:
-    for amino_acid in amino_acids:
-        for codon_option in amino_acids[amino_acid]:
+    for codon_option in amino_acids:
             #first one -- nterminal, last one -- cterminal 
             if mrna_codon == codon_option:
-                protein_sequence += (amino_acid + " - ")
+                protein_sequence += (amino_acids[codon_option] + " - ")
 
 print(protein_sequence)
 
