@@ -93,12 +93,23 @@ complementary_strand_ORF = [complementary_strand_copy[i:i+3] for i in range(comp
 mrna = ""
 #complementary_strand_ORF = str(complementary_strand_ORF
 #go through array of complementary_strand_ORF and for each key, replace the thing w the corresponding nucelotide
+'''
 for nucleic_acid in template_strand_ORF:
     for nucelotide in nucleic_acid:
         if nucelotide == 'T':
             mrna += 'U'
         else:
             mrna += nucelotide
+
+print("mrna" + str(mrna))
+'''
+
+#OPTIMIZED TEMPLATE -> MRNA 
+mrna = template_strand_ORF
+mrna = "".join(mrna)
+mrna = mrna.replace('T', 'U')
+#print("mrna" + str(mrna))
+
 '''
 else:
     mrna = ""
