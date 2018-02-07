@@ -130,7 +130,6 @@ corresponding_nucleotides = {
 while (True):
     #get the gene strand from user: test, TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT
     #this ones better: TCAATGCGCGCTACCCGGTAAAGCTCTGGGCCCAAATTTCATCCACT
-                #      TCAATGCGCGCTACCCGGTAAAGCTCTGGGCCCAAATTTCATGCCACT
     if insertion == False:
         template_strand = raw_input('gene sequence: ')
     else: 
@@ -162,70 +161,11 @@ while (True):
     complementary_strand_ORF = [complementary_strand_copy[i:i+3] for i in range(complementary_strand_copy.find("ATG"), find_stop_codon(False), 3)] #replace the open reading frame mrna 
 
     mrna = ""
-    #complementary_strand_ORF = str(complementary_strand_ORF
-    #go through array of complementary_strand_ORF and for each key, replace the thing w the corresponding nucelotide
-    '''
-
-     TCAATGCGCGCTACCCGGTAAAGCTCTGGGCCCAAATTTCATCCACT
-     TGAATGGGGGGTAGGGGGTAAAGGTGTGGGGGGAAATTTGATGGAGT
-    for nucleic_acid in template_strand_ORF:
-        for nucelotide in nucleic_acid:
-            if nucelotide == 'T':
-                mrna += 'U'
-            else:
-                mrna += nucelotide
-
-    print("mrna" + str(mrna))
-    '''
 
     #OPTIMIZED TEMPLATE -> MRNA 
     mrna = template_strand_ORF
     mrna = "".join(mrna)
     mrna = mrna.replace('T', 'U')
-    #print("mrna" + str(mrna))
-
-    '''
-    else:
-        mrna = ""
-        #complementary_strand_ORF = str(complementary_strand_ORF)
-
-        #go through array of complementary_strand_ORF and for each key, replace the thing w the corresponding nucelotide
-        for nucleic_acid in complementary_strand_ORF: 
-            for nucelotide in nucleic_acid:
-                if nucelotide == 'A':
-                    mrna += 'U'
-                else:
-                    mrna += corresponding_nucleotides[nucelotide]
-    '''
-
-    #previous method for finding the len of open reading frame, doesn't work because it won't find in increment of 3's, for ex it'll consider #attaaa having a stop, even tho its att and aaa, neither of which are stops but tta is.... this is bad 
-    # while template_strand_copy.find("ATG") > -1:
-    #     if (template_strand_copy.find("ATG") > -1 and template_strand_copy.find("TAA") > -1): #atg - start, taa - stop
-    #         diff = template_strand_copy.find("TAA") - template_strand_copy.find("ATG")
-    #         diff /= 3 #3 codons = one amino acid
-    #         if diff > orf_length_template: #orf_len in terms of # amino acids
-    #             orf_length_template = diff
-    #         template_strand_copy = template_strand_copy[template_strand_copy.find("ATG") + 3:]
-
-    #find largest open reading frame from dna sequence (complementary to template)
-    #|TCA,ATG,CGC,GCT,ACC,CGG,TAA,AGC,TCT,GGG,CCC,AAA,TTT,CAT,CCA,CT
-    #|AGT,TAC,GCG,CGA,TGG,GCC,ATT,TCG,AGA,CCC,GGG,TTT,AAA,GTA,GGT,GA
-    # orf_length_complementary = 0
-    # complementary_strand_copy = complementary_strand
-    # while complementary_strand_copy.find("ATG") > -1:
-    #     if (complementary_strand_copy.find("ATG") > -1 and complementary_strand_copy.find("TAA") > -1): #atg - start, taa - stop
-    #         diff = complementary_strand_copy.find("TAA") - complementary_strand_copy.find("ATG")
-    #         diff /= 3 #3 codons = one amino acid
-    #         if diff > orf_length_complementary: #orf_len in terms of # amino acids
-    #             orf_length_complementary = diff
-    #         complementary_strand_copy = complementary_strand_copy[complementary_strand_copy.find("ATG") + 3:]
-
-    # if orf_length_template > orf_length_complementary:
-    #     print("yea")
-    # else:
-    #     print("nah")
-
-    #transcription -- forming mrna from template strand
 
     n = 3
     mrna_codons = [mrna[i:i+n] for i in range(0, len(mrna), n)] #replace the open reading frame mrna 
