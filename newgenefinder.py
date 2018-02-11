@@ -64,6 +64,8 @@ def read(input_dna):
       genes.append(gene)
 
     longest = max(genes, key=len)
+    print "length"
+    print len(longest)
   return longest
 
 def find_complement(input_dna):
@@ -80,7 +82,9 @@ def find_complement(input_dna):
 
 def main():
     gene_arr = ["","","","","",""] #array of size 6 to hold all 6 possible genes
-    input_dna_strand = "ATGAAACTATGATAAAAAATTACCCCCCCCCCTAA"
+    input_dna_strand = "TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT"
+    # input_dna_strand = "ATGAAACTATGATAAAAAATTACCCCCCCCCCTAA"
+    print gene_arr
     print "original strand = " + input_dna_strand
     # input_dna_strand = "ATGCCCCTAATGCTAAAAATTCAATAAAATAGAAATAA" #testing stop codon wit diff ORFs  
     # input_dna_strand =  "CCCATGCCCCCCCATGCCCCCCTGACCCCCATGCCCCTGA" #mel's ex on Sat
@@ -98,6 +102,9 @@ def main():
     print "~~~~~~ORF 3~~~~~~"
     orf3 = input_dna_strand[2:]
     gene_arr[2] = read(orf3)
+    print
+    print "gene_arr (line below): "
+    print gene_arr
     print
     #assumption 2: given strand is the complementary strand (negative of the coding strand). Read complement of dna strand (read all 3 ORFs)
     comp_input_dna_strand = find_complement(input_dna_strand) #method to negate dna strand 
@@ -119,5 +126,17 @@ def main():
     longest_mrna_strand = toMRNA(longest_orf)
     longest_amino_acid = toAminoAcid(longest_mrna_strand)
     print("The longest ORF converted to protein is: " + longest_amino_acid)
+
+    # longest_dna_strand = #the longest dna strand out of the 6 in gene_arr
+
+    #longest_mrna_strand = toMRNA(longest_dna_strand)
+    #longest_amino_acid = toAminoAcid(longest_mrna_strand)
+    #print(longest_amino_acid)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# methods to implement:
+# read(input_dna_strand) #returns length of LONGEST gene for that ORF (there might be multiple gene encodings on the SAME strand on the SAME ORF)
+# toMRNA(longest_dna_strand) #converts input_dna_strand into an mRNA strand
+# toAminoAcid(longest_mrna_strand) #converts input_mrna_strand into an amino acid sequence (one letter sequence)
 
 main()
