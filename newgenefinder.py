@@ -114,19 +114,10 @@ def main():
     print "open reading frames 1-6 (line below): "
     print gene_arr
 
-
-    # longest_dna_strand = #the longest dna strand out of the 6 in gene_arr
     longest_orf = max(gene_arr, key=len)
     print("\nThe longest ORF is: " + longest_orf)
     longest_mrna_strand = toMRNA(longest_orf)
     longest_amino_acid = toAminoAcid(longest_mrna_strand)
     print("The longest ORF converted to protein is: " + longest_amino_acid)
-    #print(longest_amino_acid)
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# methods to implement:
-# read(input_dna_strand) #returns length of LONGEST gene for that ORF (there might be multiple gene encodings on the SAME strand on the SAME ORF)
-# toMRNA(longest_dna_strand) #converts input_dna_strand into an mRNA strand
-# toAminoAcid(longest_mrna_strand) #converts input_mrna_strand into an amino acid sequence (one letter sequence)
 
 main()
