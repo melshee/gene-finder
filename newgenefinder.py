@@ -4,9 +4,9 @@ from dictionaries import amino_abbr
 from dictionaries import corresponding_nucleotides
 
 #returns a list of indeces that substring (sub) is found at
-def find_start_codons(dna_strand, offset, sub="ATG"): 
+def find_start_codons(dna_strand, sub="ATG"): 
   listindex = []
-  i = dna_strand.find(sub, offset)
+  i = dna_strand.find(sub)
   while i >= 0:
     listindex.append(i)
     i = dna_strand.find(sub, i + 1)
@@ -21,8 +21,9 @@ def clip_to_stop_codon(dna_strand):
   # print dna_strand[:first_stop_codon]
   return dna_strand[:first_stop_codon]
 
-def read(input_dna, offset):
-  start_codons_list = find_start_codons(input_dna, offset)
+def read(input_dna):
+  print input_dna
+  start_codons_list = find_start_codons(input_dna)
   # print start_codons_list
   strands = [] #all strands from start codon to end of strand
   genes = [] #all strands from start codon to closest stop codon
@@ -45,16 +46,19 @@ def main():
 
     gene_arr = ["","","","","",""] #array of size 6 to hold all 6 possible genes
     # print gene_arr  
-    input_dna_strand =  "ATGCCCCCCCATGCCCCCCTGACCCCCATGCCCCTGA"
+    input_dna_strand =  "CCCATGCCCCCCCATGCCCCCCTGACCCCCATGCCCCTGA"
     # input_dna_strand =  "TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT"
     #get the gene strand from user: test, TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT
     #this ones better: TCAATGCGCGCTACCCGGTAAAGCTCTGGGCCCAAATTTCATCCACT
 
     #assummption 1: given strand is the template strand (coding strand)
       #read dna strand (read all 3 ORFs)
-    gene_arr[0] = read(input_dna_strand, 0)
-    gene_arr[1] = read(input_dna_strand, 1)
-    gene_arr[2] = read(input_dna_strand, 2)
+    orf1 = input_dna_strand
+    gene_arr[0] = read(orf1)
+    orf2 = input_dna_strand[1:]
+    gene_arr[1] = read(orf2)
+    orf3 = input_dna_strand[2:]
+    gene_arr[2] = read(orf3)
     #assumption 2: given strand is the complementary strand (negative of the coding strand)
       #negate(input_strand) #method to negate dna strand 
         #read dna strand (read all 3 ORFs)
