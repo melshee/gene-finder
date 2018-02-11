@@ -59,8 +59,9 @@ def find_complement(input_dna):
     if (nucleic_acid not in list(corresponding_nucleotides.keys())):
       raise Exception(nucleic_acid + " is not a valid nucleotide")
     complementary_dna += corresponding_nucleotides[nucleic_acid]
-  print "complementay dna = " + complementary_dna
-  #need to reverse strand (to read from 5' to 3'???)
+  # print "complementay dna = " + complementary_dna
+  complementary_dna = complementary_dna[::-1]
+  print "reversed dna = " + complementary_dna #reverse strand to read from 5' to 3'
   return complementary_dna
 
 def main():
@@ -68,7 +69,7 @@ def main():
     input_dna_strand = "ATGAAACTATGATAAAAAATTACCCCCCCCCCTAA"
     print gene_arr
     print "original strand = " + input_dna_strand
-    # input_dna_strand = "ATGCCCCTAATGCTAAAAATTCAATAAAATAGAAATAA" #testing stop codon wit diff ORFs  
+    # input_dna_strand = "ATGCCCCTAATGCTAAAAATTCAATAAAATAGAAATAA" #testing stop codon wit diff ORFs - Ruthi  
     # input_dna_strand =  "CCCATGCCCCCCCATGCCCCCCTGACCCCCATGCCCCTGA" #mel's ex on Sat
     # input_dna_strand =  "TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT"
     #get the gene strand from user: test, TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT
