@@ -9,16 +9,12 @@ import sys #for terminating program
 def terminateprogram(results):
   final_results = ""
   final_results += "         DNA sequence ---------------------- | "
-  final_results += "Amino Acid\n"
+  final_results += "Number Mutations | Amino Acid Sequence \n"
   roundnum = 1
   for dna_sequence in results:
-    final_results += ("Round " + str(roundnum) + ": " + results[dna_sequence][0] + " | " + results[dna_sequence][1] + "\n")
+    final_results += ("Round " + str(roundnum) + ": " + results[dna_sequence][0] + " |        " + str(results[dna_sequence][2]) + "         | " + results[dna_sequence][1] + "\n")
     roundnum += 1
   print(final_results)
-
-  # for dna_sequence in results:
-  #   final_results += ("" + dna_sequence + " | " + results[dna_sequence] + "\n")
-  # print(final_results)
   sys.exit()
 
 #mutates the dna sequence 
@@ -107,6 +103,7 @@ def find_complement(input_dna):
 
 def main():
   rounds = 1
+  num_nucleotides_changed = 0
   input_dna_strand = "ATGAAACTATGATAAAAAATTACCCCCCCCCCTAA"
   results = {}
   while True:
@@ -152,7 +149,7 @@ def main():
     longest_amino_acid = toAminoAcid(longest_mrna_strand)
     print("The longest ORF converted to protein is: " + longest_amino_acid)
 
-    results[rounds] = [input_dna_strand, longest_amino_acid]
+    results[rounds] = [input_dna_strand, longest_amino_acid, num_nucleotides_changed]
 
     answer = raw_input("Continue or terminate program? (c or t): ")
     if (answer == "t"):
