@@ -17,8 +17,8 @@ def toAminoAcid(longest_mrna_strand):
     amino_acid_sequence += (amino_acids[codon] + ' ')
   return amino_acid_sequence
 
-#returns a list of indeces that substring (sub) is found at
-def find_start_codons(dna_strand, sub="ATG"):
+#returns a list of indices that ATG is found at
+def find_start_codons(dna_strand):
   listindex = []
   codon_array = textwrap.wrap(dna_strand, 3)
   print codon_array
@@ -64,8 +64,6 @@ def read(input_dna):
       genes.append(gene)
 
     longest = max(genes, key=len)
-    print "length"
-    print len(longest)
   return longest
 
 def find_complement(input_dna):
@@ -75,10 +73,11 @@ def find_complement(input_dna):
       raise Exception(nucleic_acid + " is not a valid nucleotide")
     complementary_dna += corresponding_nucleotides[nucleic_acid]
   # print "complementay dna = " + complementary_dna
-  print "complementary (3' to 5') " + complementary_dna
+  # print "complementary (3' to 5') " + complementary_dna
   complementary_dna = complementary_dna[::-1]
   print "complementary (5' to 3') " + complementary_dna #reverse strand to read from 5' to 3'
   return complementary_dna
+
 
 def main():
     gene_arr = ["","","","","",""] #array of size 6 to hold all 6 possible genes
@@ -127,15 +126,9 @@ def main():
     longest_amino_acid = toAminoAcid(longest_mrna_strand)
     print("The longest ORF converted to protein is: " + longest_amino_acid)
 
-    # longest_dna_strand = #the longest dna strand out of the 6 in gene_arr
-
-    #longest_mrna_strand = toMRNA(longest_dna_strand)
-    #longest_amino_acid = toAminoAcid(longest_mrna_strand)
-    #print(longest_amino_acid)
-
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # methods to implement:
-# read(input_dna_strand) #returns length of LONGEST gene for that ORF (there might be multiple gene encodings on the SAME strand on the SAME ORF)
+# read(input_dna_strand) #returns the LONGEST gene for that ORF (there might be multiple gene encodings on the SAME strand on the SAME ORF)
 # toMRNA(longest_dna_strand) #converts input_dna_strand into an mRNA strand
 # toAminoAcid(longest_mrna_strand) #converts input_mrna_strand into an amino acid sequence (one letter sequence)
 
