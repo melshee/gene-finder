@@ -3,6 +3,29 @@ from dictionaries import amino_acids
 from dictionaries import amino_abbr
 from dictionaries import corresponding_nucleotides
 import textwrap #to separate the strands into groups of 3
+import sys #for terminating program 
+
+#terminates program, displaying final results
+def terminateprogram(results):
+  final_results = ""
+  final_results += "         DNA sequence ---------------------- | "
+  final_results += "Number Mutations | Amino Acid Sequence \n"
+  roundnum = 1
+  for dna_sequence in results:
+    final_results += ("Round " + str(roundnum) + ": " + results[dna_sequence][0] + " |        " + str(results[dna_sequence][2]) + "         | " + results[dna_sequence][1] + "\n")
+    roundnum += 1
+  print(final_results)
+  sys.exit()
+
+#mutates the dna sequence 
+def mutateGene(dna_sequence, num_nucleotides_changed):
+  i = 0 
+  while i <= num_nucleotides_changed:
+    index = randint(1, len(dna_sequence) - 1)
+    random_nucleotide = corresponding_nucleotides.keys()[randint(1, 3)]
+    dna_sequence = dna_sequence[:index - 1] + random_nucleotide + dna_sequence[index:]
+    i = i + 1
+  return dna_sequence
 
 #returns the MRNA strand of the longest ORF 
 def toMRNA(longest_dna_strand): #will always read from 5' to 3', whether it be the complementary or template strand.
@@ -80,11 +103,14 @@ def find_complement(input_dna):
 
 
 def main():
+  rounds = 1
+  num_nucleotides_changed = 0
+  input_dna_strand = "ATGAAACTATGATAAAAAATTACCCCCCCCCCTAA"
+  results = {}
+  while True:
     gene_arr = ["","","","","",""] #array of size 6 to hold all 6 possible genes
-    input_dna_strand = "TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT"
-    # input_dna_strand = "ATGAAACTATGATAAAAAATTACCCCCCCCCCTAA"
-    print gene_arr
-    print "original strand = " + input_dna_strand
+    print "\n---------------------- ROUND " + str(rounds) + " -------------------------"
+    print "\noriginal strand = " + input_dna_strand
     # input_dna_strand = "ATGCCCCTAATGCTAAAAATTCAATAAAATAGAAATAA" #testing stop codon wit diff ORFs  
     # input_dna_strand =  "CCCATGCCCCCCCATGCCCCCCTGACCCCCATGCCCCTGA" #mel's ex on Sat
     # input_dna_strand =  "TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT"
@@ -102,12 +128,10 @@ def main():
     orf3 = input_dna_strand[2:]
     gene_arr[2] = read(orf3)
     print
-    print "gene_arr (line below): "
-    print gene_arr
-    print
+    
     #assumption 2: given strand is the complementary strand (negative of the coding strand). Read complement of dna strand (read all 3 ORFs)
     comp_input_dna_strand = find_complement(input_dna_strand) #method to negate dna strand 
-    print "\n~~~~~~ORF 4~~~~~~"
+    print "~~~~~~ORF 4~~~~~~"
     comp_orf1 = comp_input_dna_strand
     gene_arr[3] = read(comp_orf1)
     print "~~~~~~ORF 5~~~~~~"
@@ -126,10 +150,95 @@ def main():
     longest_amino_acid = toAminoAcid(longest_mrna_strand)
     print("The longest ORF converted to protein is: " + longest_amino_acid)
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# methods to implement:
-# read(input_dna_strand) #returns the LONGEST gene for that ORF (there might be multiple gene encodings on the SAME strand on the SAME ORF)
-# toMRNA(longest_dna_strand) #converts input_dna_strand into an mRNA strand
-# toAminoAcid(longest_mrna_strand) #converts input_mrna_strand into an amino acid sequence (one letter sequence)
+    results[rounds] = [input_dna_strand, longest_amino_acid, num_nucleotides_changed]
 
+    answer = raw_input("Continue or terminate program? (c or t): ")
+    if (answer == "t"):
+      terminateprogram(results)
+
+    answer = raw_input('Would you like to mutate the sequence? (y, n) ')
+    if (answer == 'y'):
+        num_nucleotides_changed = raw_input('How many nucleotides would you like to see changed? (1 - ' + str(len(input_dna_strand)) + '): ')
+        print("og strand ------" + input_dna_strand)
+        input_dna_strand = mutateGene(input_dna_strand, int(num_nucleotides_changed))
+        print("mutated strand--" + input_dna_strand)
+    
+    rounds = rounds + 1
 main()
+
+
+# insertion = False;
+
+
+# def find_stop_codon(a):
+#     if a == True:
+#         list = {template_strand_copy.find("TAA"), template_strand_copy.find("TAG"), template_strand_copy.find("TGA")}
+#     else:
+#         list = {complementary_strand_copy.find("TAA"), complementary_strand_copy.find("TAG"), complementary_strand_copy.find("TGA")}
+#     for x in list: 
+#         if x > -1:
+#             return x
+
+# while (True):
+#     #get the gene strand from user: test, TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT
+#     #this ones better: TCAATGCGCGCTACCCGGTAAAGCTCTGGGCCCAAATTTCATCCACT
+#     if insertion == False:
+#         template_strand = raw_input('gene sequence: ')
+#     else: 
+#         index = randint(1, find_stop_codon(True))
+#         template_strand = template_strand[:index] + mutation.upper() + template_strand[index:]
+#         #check this
+#         insertion = False
+#     complementary_strand = ""
+
+#     #transcription -- forming complementary strand 
+#     for nucleic_acid in template_strand:
+#         if (nucleic_acid not in list(corresponding_nucleotides.keys())):
+#             raise Exception(nucleic_acid + " is not a valid nucleotide")
+#         complementary_strand += corresponding_nucleotides[nucleic_acid]
+
+#     #find largest open reading frame from dna sequence 
+#     orf_length_template = 0
+#     template_strand_copy = template_strand
+#     template_strand_ORF = []
+
+#     #find the first aug, then split off into 3 from there. -- FIXED VERSION OF FINDING AN ORF 
+#     try:
+#         template_strand_ORF = [template_strand_copy[i:i+3] for i in range(template_strand_copy.find("ATG"), find_stop_codon(True), 3)] #replace the open reading frame mrna 
+#     except:
+#         template_strand_ORF = [template_strand_copy[i:i+3] for i in range(template_strand_copy.find("ATG"), len(template_strand_copy)- 1), 3 ] #replace the open reading frame mrna
+#     #find the first aug, then split off into 3 from there. -- FIXED VERSION OF FINDING AN ORF 
+#     complementary_strand_copy = complementary_strand
+#     complementary_strand_ORF = []
+#     complementary_strand_ORF = [complementary_strand_copy[i:i+3] for i in range(complementary_strand_copy.find("ATG"), find_stop_codon(False), 3)] #replace the open reading frame mrna 
+
+#     mrna = ""
+
+#     #OPTIMIZED TEMPLATE -> MRNA 
+#     mrna = template_strand_ORF
+#     mrna = "".join(mrna)
+#     mrna = mrna.replace('T', 'U')
+
+#     n = 3
+#     mrna_codons = [mrna[i:i+n] for i in range(0, len(mrna), n)] #replace the open reading frame mrna 
+#     protein_sequence = ""
+#     #translation -- convert mrna strand to protein sequence 
+#     #testing sequence: TCATAACGCGCTACCCGATGGAGCTCTGGGCCCAAATTTCATCCACT
+#     print(mrna_codons)
+#     for mrna_codon in mrna_codons:
+#         for codon_option in amino_acids:
+#                 #first one -- nterminal, last one -- cterminal 
+#                 if mrna_codon == codon_option:
+#                     protein_sequence += (amino_acids[codon_option] + " - ")
+
+#     print(protein_sequence)
+
+#     if len(template_strand_ORF) > len(complementary_strand_ORF):
+#         print("Template strand is longer")
+#     else:
+#         print("Complementary strand is longer")
+
+#     answer = raw_input('create mutation (press c) or input another gene sequence (press g): ')
+#     if (answer == 'c'):
+#         insertion = True
+#         mutation = raw_input("Enter a nucleotide (a, g, t, c) to randomly insert into DNA sequence")
