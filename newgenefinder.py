@@ -3,6 +3,23 @@ from dictionaries import amino_acids
 from dictionaries import amino_abbr
 from dictionaries import corresponding_nucleotides
 import textwrap #to separate the strands into groups of 3
+import sys #for terminating program 
+
+#terminates program, displaying final results
+def terminateprogram(results):
+  final_results = ""
+  final_results += "         DNA sequence ---------------------- | "
+  final_results += "Amino Acid\n"
+  roundnum = 1
+  for dna_sequence in results:
+    final_results += ("Round " + str(roundnum) + ": " + results[dna_sequence][0] + " | " + results[dna_sequence][1] + "\n")
+    roundnum += 1
+  print(final_results)
+
+  # for dna_sequence in results:
+  #   final_results += ("" + dna_sequence + " | " + results[dna_sequence] + "\n")
+  # print(final_results)
+  sys.exit()
 
 #mutates the dna sequence 
 def mutateGene(dna_sequence, num_nucleotides_changed):
@@ -91,6 +108,7 @@ def find_complement(input_dna):
 def main():
   rounds = 1
   input_dna_strand = "ATGAAACTATGATAAAAAATTACCCCCCCCCCTAA"
+  results = {}
   while True:
     gene_arr = ["","","","","",""] #array of size 6 to hold all 6 possible genes
     print "\n---------------------- ROUND " + str(rounds) + " -------------------------"
@@ -115,7 +133,7 @@ def main():
     
     #assumption 2: given strand is the complementary strand (negative of the coding strand). Read complement of dna strand (read all 3 ORFs)
     comp_input_dna_strand = find_complement(input_dna_strand) #method to negate dna strand 
-    print "\n~~~~~~ORF 4~~~~~~"
+    print "~~~~~~ORF 4~~~~~~"
     comp_orf1 = comp_input_dna_strand
     gene_arr[3] = read(comp_orf1)
     print "~~~~~~ORF 5~~~~~~"
@@ -134,12 +152,19 @@ def main():
     longest_amino_acid = toAminoAcid(longest_mrna_strand)
     print("The longest ORF converted to protein is: " + longest_amino_acid)
 
-    answer = raw_input('Would you like to mutate the sequence? (y or n) ')
+    results[rounds] = [input_dna_strand, longest_amino_acid]
+
+    answer = raw_input("Continue or terminate program? (c or t): ")
+    if (answer == "t"):
+      terminateprogram(results)
+
+    answer = raw_input('Would you like to mutate the sequence? (y, n) ')
     if (answer == 'y'):
         num_nucleotides_changed = raw_input('How many nucleotides would you like to see changed? (1 - ' + str(len(input_dna_strand)) + '): ')
         print("og strand ------" + input_dna_strand)
         input_dna_strand = mutateGene(input_dna_strand, int(num_nucleotides_changed))
         print("mutated strand--" + input_dna_strand)
+    
     rounds = rounds + 1
 main()
 
