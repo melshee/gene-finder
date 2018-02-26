@@ -3,6 +3,59 @@ from dictionaries import amino_acids
 from dictionaries import amino_abbr
 from dictionaries import corresponding_nucleotides
 import textwrap #to separate the strands into groups of 3
+import sys #for terminating program 
+
+#terminates program, displaying final results
+def terminateprogram(results):
+  final_results = "\n"
+  final_results += "         DNA sequence                                    | "
+  final_results += "Number Mutations | Amino Acid Sequence \n"             
+  roundnum = 1
+  for dna_sequence in results:
+    final_results += ("Round " + str(roundnum) + ": " + results[dna_sequence][0] + " |        " + str(results[dna_sequence][2]) + "         | " + results[dna_sequence][1] + "\n")
+    roundnum += 1
+  print(final_results)
+  sys.exit()
+
+#mutates the dna sequence deletion
+def mutateGeneDeletion(dna_sequence):
+  index = randint(1, len(dna_sequence) - 1)
+  temp_dna_sequence = list(dna_sequence)
+  temp_dna_sequence[index] = ''
+  dna_sequence = "".join(str(x) for x in temp_dna_sequence)
+  return dna_sequence
+
+#mutates the dna sequence insertion
+def mutateGeneInsertion(dna_sequence):
+  index = randint(1, len(dna_sequence) - 1)
+  random_nucleotide = corresponding_nucleotides.keys()[randint(1, 3)]
+  temp_dna_sequence = list(dna_sequence)
+  temp_dna_sequence[index] = random_nucleotide
+  dna_sequence = "".join(str(x) for x in temp_dna_sequence)
+  return dna_sequence
+
+#mutates the dna sequence in place
+def mutateGeneInPlace(dna_sequence, num_nucleotides_changed):
+  i = 0 
+  while i <= num_nucleotides_changed:
+    index = randint(1, len(dna_sequence) - 1)
+    random_nucleotide = corresponding_nucleotides.keys()[randint(1, 3)]
+    dna_sequence = dna_sequence[:index - 1] + random_nucleotide + dna_sequence[index:]
+    i = i + 1
+  return dna_sequence
+
+#returns the MRNA strand of the longest ORF 
+def toMRNA(longest_dna_strand): #will always read from 5' to 3', whether it be the complementary or template strand.
+  mrna = "".join(longest_dna_strand)
+  mrna = mrna.replace('T', 'U')
+  return mrna
+
+def toAminoAcid(longest_mrna_strand):
+  amino_acid_sequence = ""
+  mrna_codons = [longest_mrna_strand[i:i+3] for i in range(0, len(longest_mrna_strand), 3)] #replace the open reading frame mrna 
+  for codon in mrna_codons:
+    amino_acid_sequence += (amino_acids[codon] + ' ')
+  return amino_acid_sequence
 
 #returns a list of indeces that substring (sub) is found at
 def find_start_codons(dna_strand, sub="ATG"):
@@ -59,15 +112,21 @@ def find_complement(input_dna):
     if (nucleic_acid not in list(corresponding_nucleotides.keys())):
       raise Exception(nucleic_acid + " is not a valid nucleotide")
     complementary_dna += corresponding_nucleotides[nucleic_acid]
-  print "complementay dna = " + complementary_dna
-  #need to reverse strand (to read from 5' to 3'???)
+  # print "complementay dna = " + complementary_dna
+  print "complementary (3' to 5') " + complementary_dna
+  complementary_dna = complementary_dna[::-1]
+  print "complementary (5' to 3') " + complementary_dna #reverse strand to read from 5' to 3'
   return complementary_dna
 
 def main():
+  rounds = 1
+  num_nucleotides_changed = 0
+  input_dna_strand = "TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT"
+  results = {}
+  while True:
     gene_arr = ["","","","","",""] #array of size 6 to hold all 6 possible genes
-    input_dna_strand = "ATGAAACTATGATAAAAAATTACCCCCCCCCCTAA"
-    print gene_arr
-    print "original strand = " + input_dna_strand
+    print "\n-------------------------------- ROUND " + str(rounds) + " --------------------------------"
+    print "\noriginal strand = " + input_dna_strand
     # input_dna_strand = "ATGCCCCTAATGCTAAAAATTCAATAAAATAGAAATAA" #testing stop codon wit diff ORFs  
     # input_dna_strand =  "CCCATGCCCCCCCATGCCCCCCTGACCCCCATGCCCCTGA" #mel's ex on Sat
     # input_dna_strand =  "TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT"
@@ -85,9 +144,7 @@ def main():
     orf3 = input_dna_strand[2:]
     gene_arr[2] = read(orf3)
     print
-    print "gene_arr (line below): "
-    print gene_arr
-    print
+    
     #assumption 2: given strand is the complementary strand (negative of the coding strand). Read complement of dna strand (read all 3 ORFs)
     comp_input_dna_strand = find_complement(input_dna_strand) #method to negate dna strand 
     print "~~~~~~ORF 4~~~~~~"
@@ -99,18 +156,43 @@ def main():
     print "~~~~~~ORF 6~~~~~~"
     comp_orf3 = comp_input_dna_strand[2:]
     gene_arr[5] = read(comp_orf3)
+    print
+    print "open reading frames 1-6 (line below): "
     print gene_arr
 
-    # longest_dna_strand = #the longest dna strand out of the 6 in gene_arr
+    longest_orf = max(gene_arr, key=len)
+    print("\nThe longest ORF is: " + longest_orf)
+    longest_mrna_strand = toMRNA(longest_orf)
+    longest_amino_acid = toAminoAcid(longest_mrna_strand)
+    print("The longest ORF converted to amino acids are: " + longest_amino_acid)
 
-    #longest_mrna_strand = toMRNA(longest_dna_strand)
-    #longest_amino_acid = toAminoAcid(longest_mrna_strand)
-    #print(longest_amino_acid)
+    results[rounds] = [input_dna_strand, longest_amino_acid, num_nucleotides_changed]
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# methods to implement:
-# read(input_dna_strand) #returns length of LONGEST gene for that ORF (there might be multiple gene encodings on the SAME strand on the SAME ORF)
-# toMRNA(longest_dna_strand) #converts input_dna_strand into an mRNA strand
-# toAminoAcid(longest_mrna_strand) #converts input_mrna_strand into an amino acid sequence (one letter sequence)
+    answer = raw_input("Continue or terminate program? (c or t): ")
+    if (answer == "t"):
+      terminateprogram(results)
 
+    answer = raw_input('Would you like to mutate the sequence? (y, n) ')
+    if (answer == 'y'):
+        mutation_type = raw_input("Type of mutation (i for insertion, d for deletion, p for in place): ")
+    
+        if mutation_type == 'p':
+          num_nucleotides_changed = raw_input('How many nucleotides would you like to see changed? (1 - ' + str(len(input_dna_strand)) + '): ')
+          print("original strand: " + input_dna_strand)
+          input_dna_strand = mutateGeneInPlace(input_dna_strand, int(num_nucleotides_changed))
+          print("mutated  strand: " + input_dna_strand)
+
+        if mutation_type == 'i':
+          print("original strand: " + input_dna_strand)
+          print("Conducting insertion mutation....")
+          input_dna_strand = mutateGeneInsertion(input_dna_strand)
+          print("mutated  strand: " + input_dna_strand)
+        
+        if mutation_type == 'd':
+          print("original strand: " + input_dna_strand)
+          print("Conducting deletion mutation.....")
+          input_dna_strand = mutateGeneDeletion(input_dna_strand)
+          print("mutated  strand: " + input_dna_strand)
+    
+    rounds = rounds + 1
 main()
