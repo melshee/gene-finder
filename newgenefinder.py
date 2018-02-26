@@ -1,11 +1,11 @@
-from random import *
-from dictionaries import amino_acids
-from dictionaries import amino_abbr
-from dictionaries import corresponding_nucleotides
-import textwrap #to separate the strands into groups of 3
-import sys #for terminating program 
+from random import * #used to generate random idices for mutations
+from dictionaries import amino_acids # codons -> amino acids (abbrevations) database
+from dictionaries import amino_abbr # abbreviations -> full amino acid name database
+from dictionaries import corresponding_nucleotides # corresponding nucleotide (generating complementary strands) database
+import textwrap # to separate the strands into groups of 3
+import sys # to terminating program 
 
-#terminates program, displaying final results
+# Terminates program, displaying final results as a table
 def terminateprogram(results):
   final_results = "\n"
   final_results += "         DNA sequence                                    | "
@@ -17,7 +17,7 @@ def terminateprogram(results):
   print(final_results)
   sys.exit()
 
-#mutates the dna sequence deletion
+# Mutation - Deletion
 def mutateGeneDeletion(dna_sequence):
   index = randint(1, len(dna_sequence) - 1)
   temp_dna_sequence = list(dna_sequence)
@@ -25,7 +25,7 @@ def mutateGeneDeletion(dna_sequence):
   dna_sequence = "".join(str(x) for x in temp_dna_sequence)
   return dna_sequence
 
-#mutates the dna sequence insertion
+# Mutation - Insertion
 def mutateGeneInsertion(dna_sequence):
   index = randint(1, len(dna_sequence) - 1)
   random_nucleotide = corresponding_nucleotides.keys()[randint(1, 3)]
@@ -34,7 +34,7 @@ def mutateGeneInsertion(dna_sequence):
   dna_sequence = "".join(str(x) for x in temp_dna_sequence)
   return dna_sequence
 
-#mutates the dna sequence in place
+# Mutation - In place 
 def mutateGeneInPlace(dna_sequence, num_nucleotides_changed):
   i = 0 
   while i <= num_nucleotides_changed:
@@ -44,12 +44,13 @@ def mutateGeneInPlace(dna_sequence, num_nucleotides_changed):
     i = i + 1
   return dna_sequence
 
-#returns the MRNA strand of the longest ORF 
-def toMRNA(longest_dna_strand): #will always read from 5' to 3', whether it be the complementary or template strand.
+# returns the MRNA strand of the longest ORF 
+def toMRNA(longest_dna_strand): # will always read from 5' to 3', whether it be the complementary or template strand.
   mrna = "".join(longest_dna_strand)
   mrna = mrna.replace('T', 'U')
   return mrna
 
+# returns amino acid sequence synthesized from an mRNA strand
 def toAminoAcid(longest_mrna_strand):
   amino_acid_sequence = ""
   mrna_codons = [longest_mrna_strand[i:i+3] for i in range(0, len(longest_mrna_strand), 3)] #replace the open reading frame mrna 
@@ -57,7 +58,7 @@ def toAminoAcid(longest_mrna_strand):
     amino_acid_sequence += (amino_acids[codon] + ' ')
   return amino_acid_sequence
 
-#returns a list of indices that ATG is found at
+# returns a list of indices that ATG (start) is found at
 def find_start_codons(dna_strand):
   listindex = []
   codon_array = textwrap.wrap(dna_strand, 3)
@@ -70,15 +71,15 @@ def find_start_codons(dna_strand):
   # print listindex
   return listindex 
 
-#returns the dna_strand minus all the base pairs following the first stop codon found
+# Returns the dna_strand minus all the base pairs following the first stop codon found
 def clip_after_stop_codon(dna_strand):
   codon_array = textwrap.wrap(dna_strand, 3)
   # print codon_array
-  #THIS LINE BELOW IS UGLY NEED HALP MAKING IT BETTER LOL
+  # Finding all of the stop codons in the array 
   stop_codon_list = [codon_array.index("TAA") if "TAA" in codon_array else -1, 
              codon_array.index("TAG") if "TAG" in codon_array else -1,
              codon_array.index("TGA") if "TGA" in codon_array else -1]
- #more ugliness I try to fix a better way somehow..later
+
   stop_codon_list.remove(-1) if -1 in stop_codon_list else None
   stop_codon_list.remove(-1) if -1 in stop_codon_list else None
   stop_codon_list.remove(-1) if -1 in stop_codon_list else None
@@ -90,6 +91,7 @@ def clip_after_stop_codon(dna_strand):
   print dna_strand[:first_stop_codon]
   return dna_strand[:first_stop_codon]
 
+# Returns longest open reading frame
 def read(input_dna):
   longest = ""
   start_codons_list = find_start_codons(input_dna)
@@ -106,6 +108,7 @@ def read(input_dna):
     longest = max(genes, key=len)
   return longest
 
+# returns the complementary strand of a strand
 def find_complement(input_dna):
   complementary_dna = ""
   for nucleic_acid in input_dna:
@@ -118,7 +121,7 @@ def find_complement(input_dna):
   print "complementary (5' to 3') " + complementary_dna #reverse strand to read from 5' to 3'
   return complementary_dna
 
-
+# main runs the entire program.
 def main():
   rounds = 1
   num_nucleotides_changed = 0
@@ -128,12 +131,6 @@ def main():
     gene_arr = ["","","","","",""] #array of size 6 to hold all 6 possible genes
     print "\n-------------------------------- ROUND " + str(rounds) + " --------------------------------"
     print "\noriginal strand = " + input_dna_strand
-    # input_dna_strand = "ATGCCCCTAATGCTAAAAATTCAATAAAATAGAAATAA" #testing stop codon wit diff ORFs  
-    # input_dna_strand =  "CCCATGCCCCCCCATGCCCCCCTGACCCCCATGCCCCTGA" #mel's ex on Sat
-    # input_dna_strand =  "TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT"
-    #get the gene strand from user: test, TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT
-    #this ones better: TCAATGCGCGCTACCCGGTAAAGCTCTGGGCCCAAATTTCATCCACT
-
     #assummption 1: given strand is the template strand (coding strand). Read dna strand (read all 3 ORFs)
     print "~~~~~~ORF 1~~~~~~"
     orf1 = input_dna_strand
