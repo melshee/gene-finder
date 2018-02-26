@@ -57,8 +57,8 @@ def toAminoAcid(longest_mrna_strand):
     amino_acid_sequence += (amino_acids[codon] + ' ')
   return amino_acid_sequence
 
-#returns a list of indeces that substring (sub) is found at
-def find_start_codons(dna_strand, sub="ATG"):
+#returns a list of indices that ATG is found at
+def find_start_codons(dna_strand):
   listindex = []
   codon_array = textwrap.wrap(dna_strand, 3)
   print codon_array
@@ -113,10 +113,11 @@ def find_complement(input_dna):
       raise Exception(nucleic_acid + " is not a valid nucleotide")
     complementary_dna += corresponding_nucleotides[nucleic_acid]
   # print "complementay dna = " + complementary_dna
-  print "complementary (3' to 5') " + complementary_dna
+  # print "complementary (3' to 5') " + complementary_dna
   complementary_dna = complementary_dna[::-1]
   print "complementary (5' to 3') " + complementary_dna #reverse strand to read from 5' to 3'
   return complementary_dna
+
 
 def main():
   rounds = 1
