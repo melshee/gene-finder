@@ -17,8 +17,25 @@ def terminateprogram(results):
   print(final_results)
   sys.exit()
 
-#mutates the dna sequence 
-def mutateGene(dna_sequence, num_nucleotides_changed):
+#mutates the dna sequence deletion
+def mutateGeneDeletion(dna_sequence):
+  index = randint(1, len(dna_sequence) - 1)
+  temp_dna_sequence = list(dna_sequence)
+  temp_dna_sequence[index] = ''
+  dna_sequence = "".join(str(x) for x in temp_dna_sequence)
+  return dna_sequence
+
+#mutates the dna sequence insertion
+def mutateGeneInsertion(dna_sequence):
+  index = randint(1, len(dna_sequence) - 1)
+  random_nucleotide = corresponding_nucleotides.keys()[randint(1, 3)]
+  temp_dna_sequence = list(dna_sequence)
+  temp_dna_sequence[index] = random_nucleotide
+  dna_sequence = "".join(str(x) for x in temp_dna_sequence)
+  return dna_sequence
+
+#mutates the dna sequence in place
+def mutateGeneInPlace(dna_sequence, num_nucleotides_changed):
   i = 0 
   while i <= num_nucleotides_changed:
     index = randint(1, len(dna_sequence) - 1)
@@ -108,7 +125,7 @@ def main():
   results = {}
   while True:
     gene_arr = ["","","","","",""] #array of size 6 to hold all 6 possible genes
-    print "\n----------------------------------- ROUND " + str(rounds) + " -----------------------------------"
+    print "\n-------------------------------- ROUND " + str(rounds) + " --------------------------------"
     print "\noriginal strand = " + input_dna_strand
     # input_dna_strand = "ATGCCCCTAATGCTAAAAATTCAATAAAATAGAAATAA" #testing stop codon wit diff ORFs  
     # input_dna_strand =  "CCCATGCCCCCCCATGCCCCCCTGACCCCCATGCCCCTGA" #mel's ex on Sat
@@ -157,10 +174,25 @@ def main():
 
     answer = raw_input('Would you like to mutate the sequence? (y, n) ')
     if (answer == 'y'):
-        num_nucleotides_changed = raw_input('How many nucleotides would you like to see changed? (1 - ' + str(len(input_dna_strand)) + '): ')
-        print("original strand: " + input_dna_strand)
-        input_dna_strand = mutateGene(input_dna_strand, int(num_nucleotides_changed))
-        print("mutated  strand: " + input_dna_strand)
+        mutation_type = raw_input("Type of mutation (i for insertion, d for deletion, p for in place): ")
+    
+        if mutation_type == 'p':
+          num_nucleotides_changed = raw_input('How many nucleotides would you like to see changed? (1 - ' + str(len(input_dna_strand)) + '): ')
+          print("original strand: " + input_dna_strand)
+          input_dna_strand = mutateGeneInPlace(input_dna_strand, int(num_nucleotides_changed))
+          print("mutated  strand: " + input_dna_strand)
+
+        if mutation_type == 'i':
+          print("original strand: " + input_dna_strand)
+          print("Conducting insertion mutation....")
+          input_dna_strand = mutateGeneInsertion(input_dna_strand)
+          print("mutated  strand: " + input_dna_strand)
+        
+        if mutation_type == 'd':
+          print("original strand: " + input_dna_strand)
+          print("Conducting deletion mutation.....")
+          input_dna_strand = mutateGeneDeletion(input_dna_strand)
+          print("mutated  strand: " + input_dna_strand)
     
     rounds = rounds + 1
 main()
