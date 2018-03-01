@@ -12,7 +12,10 @@ def terminateprogram(results):
   final_results += "Number Mutations | Amino Acid Sequence               | Mutation Type\n"             
   roundnum = 1                                                           
   for dna_sequence in results:
-    final_results += ("Round " + str(roundnum) + ": " + results[dna_sequence][0] + " |        " + str(results[dna_sequence][2]) + "         | " + results[dna_sequence][1] + "     | " + results[dna_sequence][3] + "\n")
+    if results[dna_sequence][2] > 0 or roundnum == 1:
+      final_results += ("Round " + str(roundnum) + ": " + results[dna_sequence][0] + " |        " + str(results[dna_sequence][2]) + "         | " + results[dna_sequence][1] + "     | " + results[dna_sequence][3] + "\n")
+    else:
+      final_results += ("Round " + str(roundnum) + ": " + results[dna_sequence][0] + " |        " + "1" + "         | " + results[dna_sequence][1] + "     | " + results[dna_sequence][3] + "\n")
     roundnum += 1
   print(final_results)
   sys.exit()
