@@ -81,6 +81,10 @@ amino_acids = {
     'CGG': 'R',
     'AGA': 'R',
     'AGG': 'R',
+
+    'UAA': '- STOP',
+    'UAG': '- STOP',
+    'UGA': '- STOP'
 }
 
 amino_abbr = {

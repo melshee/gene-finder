@@ -26,12 +26,15 @@ def mutateGeneDeletion(dna_sequence):
   return dna_sequence
 
 # Mutation - Insertion
+#TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT
+#TCGAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT
 def mutateGeneInsertion(dna_sequence):
   index = randint(1, len(dna_sequence) - 1)
   random_nucleotide = corresponding_nucleotides.keys()[randint(1, 3)]
-  temp_dna_sequence = list(dna_sequence)
-  temp_dna_sequence[index] = random_nucleotide
-  dna_sequence = "".join(str(x) for x in temp_dna_sequence)
+  temp_dna_sequence = dna_sequence[:index]
+  temp_dna_sequence += random_nucleotide
+  temp_dna_sequence += dna_sequence[index:]
+  dna_sequence = temp_dna_sequence
   return dna_sequence
 
 # Mutation - In place 
@@ -121,6 +124,7 @@ def find_complement(input_dna):
   print "complementary (5' to 3') " + template_dna #reverse strand to read from 5' to 3'
   return template_dna
 
+
 # main runs the entire program.
 def main():
   rounds = 1
@@ -181,7 +185,7 @@ def main():
           print("mutated  strand: " + input_dna_strand)
 
         if mutation_type == 'i':
-          print("original strand: " + input_dna_strand)
+          print("\noriginal strand: " + input_dna_strand)
           print("Conducting insertion mutation....")
           input_dna_strand = mutateGeneInsertion(input_dna_strand)
           print("mutated  strand: " + input_dna_strand)

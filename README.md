@@ -41,36 +41,41 @@ The longest ORF converted to amino acids are: M K F G P R A P G S A L H - STOP
 Continue or terminate program? (c or t): c
 Would you like to mutate the sequence? (y, n) y
 Type of mutation (i for insertion, d for deletion, p for in place): i
+
 original strand: TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT
 Conducting insertion mutation....
-mutated  strand: TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT
+mutated  strand: TCAATGTAACGCGCTACCCGGAGCCTCTGGGCCCAAATTTCATCCACT
 
 -------------------------------- ROUND 2 --------------------------------
 
-original strand = TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT
+original strand = TCAATGTAACGCGCTACCCGGAGCCTCTGGGCCCAAATTTCATCCACT
 ~~~~~~ORF 1~~~~~~
-['TCA', 'ATG', 'TAA', 'CGC', 'GCT', 'ACC', 'CGG', 'AGC', 'TCT', 'GGG', 'CCC', 'AAA', 'TTT', 'CAT', 'CCA', 'CT']
+['TCA', 'ATG', 'TAA', 'CGC', 'GCT', 'ACC', 'CGG', 'AGC', 'CTC', 'TGG', 'GCC', 'CAA', 'ATT', 'TCA', 'TCC', 'ACT']
 ATGTAA
 ~~~~~~ORF 2~~~~~~
-['CAA', 'TGT', 'AAC', 'GCG', 'CTA', 'CCC', 'GGA', 'GCT', 'CTG', 'GGC', 'CCA', 'AAT', 'TTC', 'ATC', 'CAC', 'T']
+['CAA', 'TGT', 'AAC', 'GCG', 'CTA', 'CCC', 'GGA', 'GCC', 'TCT', 'GGG', 'CCC', 'AAA', 'TTT', 'CAT', 'CCA', 'CT']
 ~~~~~~ORF 3~~~~~~
-['AAT', 'GTA', 'ACG', 'CGC', 'TAC', 'CCG', 'GAG', 'CTC', 'TGG', 'GCC', 'CAA', 'ATT', 'TCA', 'TCC', 'ACT']
+['AAT', 'GTA', 'ACG', 'CGC', 'TAC', 'CCG', 'GAG', 'CCT', 'CTG', 'GGC', 'CCA', 'AAT', 'TTC', 'ATC', 'CAC', 'T']
 
-complementary (5' to 3') AGTGGATGAAATTTGGGCCCAGAGCTCCGGGTAGCGCGTTACATTGA
+complementary (5' to 3') AGTGGATGAAATTTGGGCCCAGAGGCTCCGGGTAGCGCGTTACATTGA
 ~~~~~~ORF 4~~~~~~
-['AGT', 'GGA', 'TGA', 'AAT', 'TTG', 'GGC', 'CCA', 'GAG', 'CTC', 'CGG', 'GTA', 'GCG', 'CGT', 'TAC', 'ATT', 'GA']
+['AGT', 'GGA', 'TGA', 'AAT', 'TTG', 'GGC', 'CCA', 'GAG', 'GCT', 'CCG', 'GGT', 'AGC', 'GCG', 'TTA', 'CAT', 'TGA']
 ~~~~~~ORF 5~~~~~~
-['GTG', 'GAT', 'GAA', 'ATT', 'TGG', 'GCC', 'CAG', 'AGC', 'TCC', 'GGG', 'TAG', 'CGC', 'GTT', 'ACA', 'TTG', 'A']
+['GTG', 'GAT', 'GAA', 'ATT', 'TGG', 'GCC', 'CAG', 'AGG', 'CTC', 'CGG', 'GTA', 'GCG', 'CGT', 'TAC', 'ATT', 'GA']
 ~~~~~~ORF 6~~~~~~
-['TGG', 'ATG', 'AAA', 'TTT', 'GGG', 'CCC', 'AGA', 'GCT', 'CCG', 'GGT', 'AGC', 'GCG', 'TTA', 'CAT', 'TGA']
-ATGAAATTTGGGCCCAGAGCTCCGGGTAGCGCGTTACATTGA
+['TGG', 'ATG', 'AAA', 'TTT', 'GGG', 'CCC', 'AGA', 'GGC', 'TCC', 'GGG', 'TAG', 'CGC', 'GTT', 'ACA', 'TTG', 'A']
+ATGAAATTTGGGCCCAGAGGCTCCGGGTAG
 
 open reading frames 1-6 (line below): 
-['ATGTAA', '', '', '', '', 'ATGAAATTTGGGCCCAGAGCTCCGGGTAGCGCGTTACATTGA']
+['ATGTAA', '', '', '', '', 'ATGAAATTTGGGCCCAGAGGCTCCGGGTAG']
 
-The longest ORF is: ATGAAATTTGGGCCCAGAGCTCCGGGTAGCGCGTTACATTGA
-The longest ORF converted to amino acids are: M K F G P R A P G S A L H - STOP 
-Continue or terminate program? (c or t): 
+The longest ORF is: ATGAAATTTGGGCCCAGAGGCTCCGGGTAG
+The longest ORF converted to amino acids are: M K F G P R G S G - STOP 
+Continue or terminate program? (c or t): t
+
+         DNA sequence                                    | Number Mutations | Amino Acid Sequence 
+Round 1: TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT |        0         | M K F G P R A P G S A L H - STOP 
+Round 2: TCAATGTAACGCGCTACCCGGAGCCTCTGGGCCCAAATTTCATCCACT |        0         | M K F G P R G S G - STOP 
 
 ``` 
 
