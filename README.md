@@ -2,7 +2,7 @@
 program that generates an amino acid sequence from a DNA strand, in addition to exploring the effects of mutations on protein sequence formation.
 
 **warning**
-new
+``` Input is provided in the program. Thus our program does not check for DNA sequence validation ```
 
 ## Running the program 
 run python genefinder.py in the console.
