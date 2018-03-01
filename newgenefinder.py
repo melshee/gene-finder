@@ -9,10 +9,10 @@ import sys # to terminating program
 def terminateprogram(results):
   final_results = "\n"
   final_results += "         DNA sequence                                    | "
-  final_results += "Number Mutations | Amino Acid Sequence \n"             
-  roundnum = 1
+  final_results += "Number Mutations | Amino Acid Sequence               | Mutation Type\n"             
+  roundnum = 1                                                           
   for dna_sequence in results:
-    final_results += ("Round " + str(roundnum) + ": " + results[dna_sequence][0] + " |        " + str(results[dna_sequence][2]) + "         | " + results[dna_sequence][1] + "\n")
+    final_results += ("Round " + str(roundnum) + ": " + results[dna_sequence][0] + " |        " + str(results[dna_sequence][2]) + "         | " + results[dna_sequence][1] + "     | " + results[dna_sequence][3] + "\n")
     roundnum += 1
   print(final_results)
   sys.exit()
@@ -26,8 +26,6 @@ def mutateGeneDeletion(dna_sequence):
   return dna_sequence
 
 # Mutation - Insertion
-#TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT
-#TCGAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT
 def mutateGeneInsertion(dna_sequence):
   index = randint(1, len(dna_sequence) - 1)
   random_nucleotide = corresponding_nucleotides.keys()[randint(1, 3)]
@@ -127,6 +125,7 @@ def find_complement(input_dna):
 
 # main runs the entire program.
 def main():
+  mutation_type = ""
   rounds = 1
   num_nucleotides_changed = 0
   input_dna_strand = "TCAATGTAACGCGCTACCCGGAGCTCTGGGCCCAAATTTCATCCACT"
@@ -168,7 +167,7 @@ def main():
     longest_amino_acid = toAminoAcid(longest_mrna_strand)
     print("The longest ORF converted to amino acids are: " + longest_amino_acid)
 
-    results[rounds] = [input_dna_strand, longest_amino_acid, num_nucleotides_changed]
+    results[rounds] = [input_dna_strand, longest_amino_acid, num_nucleotides_changed, mutation_type]
 
     answer = raw_input("Continue or terminate program? (c or t): ")
     if (answer == "t"):
@@ -183,18 +182,20 @@ def main():
           print("original strand: " + input_dna_strand)
           input_dna_strand = mutateGeneInPlace(input_dna_strand, int(num_nucleotides_changed))
           print("mutated  strand: " + input_dna_strand)
-
+          mutation_type = "In Place"
         if mutation_type == 'i':
           print("\noriginal strand: " + input_dna_strand)
           print("Conducting insertion mutation....")
           input_dna_strand = mutateGeneInsertion(input_dna_strand)
           print("mutated  strand: " + input_dna_strand)
-        
+          mutation_type = "Insertion"
+
         if mutation_type == 'd':
           print("original strand: " + input_dna_strand)
           print("Conducting deletion mutation.....")
           input_dna_strand = mutateGeneDeletion(input_dna_strand)
           print("mutated  strand: " + input_dna_strand)
-    
+          mutation_type = "Deletion"
+
     rounds = rounds + 1
 main()
