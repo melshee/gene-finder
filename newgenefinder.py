@@ -110,16 +110,16 @@ def read(input_dna):
 
 # returns the complementary strand of a strand
 def find_complement(input_dna):
-  complementary_dna = ""
+  template_dna = ""
   for nucleic_acid in input_dna:
     if (nucleic_acid not in list(corresponding_nucleotides.keys())):
       raise Exception(nucleic_acid + " is not a valid nucleotide")
-    complementary_dna += corresponding_nucleotides[nucleic_acid]
-  # print "complementay dna = " + complementary_dna
-  # print "complementary (3' to 5') " + complementary_dna
-  complementary_dna = complementary_dna[::-1]
-  print "complementary (5' to 3') " + complementary_dna #reverse strand to read from 5' to 3'
-  return complementary_dna
+    template_dna += corresponding_nucleotides[nucleic_acid]
+  # print "template_dna dna = " + template_dna
+  # print "template_dna (3' to 5') " + template_dna
+  template_dna = template_dna[::-1]
+  print "complementary (5' to 3') " + template_dna #reverse strand to read from 5' to 3'
+  return template_dna
 
 # main runs the entire program.
 def main():
